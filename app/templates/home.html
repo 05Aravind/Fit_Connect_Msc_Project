@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <section style="background-color: #f9f9f9; padding: 2rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h1 style="font-size: 3rem; color: #333; margin-bottom: 1rem;">Welcome to Fitness App</h1>
+            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">Your journey to a healthier lifestyle starts here.</p>
+            <a href="{% url 'register' %}" style="display: inline-block; background-color: #333; color: #fff; text-decoration: none; padding: 1rem 2rem; border-radius: 5px; transition: background-color 0.3s ease;">Get Started</a>
+        </div>
+    </section>
+
+    <section style="background-color: #fff; padding: 2rem;">
+        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 2rem; color: #333; margin-bottom: 1rem;">Features</h2>
+            <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Workout Plans</h3>
+                    <p style="color: #666;">Create custom workout plans tailored to your fitness goals.</p>
+                </div>
+                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Diet Charts</h3>
+                    <p style="color: #666;">Plan your meals with our easy-to-follow diet charts.</p>
+                </div>
+                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Personal Trainers</h3>
+                    <p style="color: #666;">Connect with experienced trainers for personalized guidance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
