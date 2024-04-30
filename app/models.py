@@ -1,18 +1,18 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-
 class CustomUser(AbstractUser):
-    username = models.CharField(max_length=50, primary_key= True)
+    userid = models.IntegerField(primary_key=True)
+    username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100)
     age = models.IntegerField()
+    # password = models.CharField()
     gender = models.CharField(max_length=1)
     height = models.DecimalField(max_digits=5, decimal_places=2)
     weight = models.DecimalField(max_digits=5, decimal_places=2)
-    password = models.CharField(max_length=128)  
 
-    USERNAME_FIELD = 'username'  
-    REQUIRED_FIELDS = [ 'email', 'age', 'gender', 'height', 'weight']
+    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'username'
 
 
 class Trainer(models.Model):
@@ -26,7 +26,7 @@ class Trainer(models.Model):
 
 class WorkoutPlan(models.Model):
     planid = models.IntegerField(primary_key=True)
-    userid = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    userid = models.IntegerField()
     title = models.CharField(max_length=100)
     description = models.TextField()
     duration = models.IntegerField()
@@ -35,7 +35,7 @@ class WorkoutPlan(models.Model):
 
 class FitnessActivity(models.Model):
     activityid = models.IntegerField(primary_key=True)
-    userid = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    userid = models.IntegerField()
     type = models.CharField(max_length=50)
     duration = models.IntegerField()
     activity_date = models.DateField()
@@ -43,7 +43,7 @@ class FitnessActivity(models.Model):
 
 class DietChart(models.Model):
     dietid = models.IntegerField(primary_key=True)
-    userid = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    userid = models.IntegerField()
     food_name = models.CharField(max_length=100)
     quantity = models.CharField(max_length=50)
     timing = models.CharField(max_length=50)
@@ -51,7 +51,7 @@ class DietChart(models.Model):
 
 class Payment(models.Model):
     paymentid = models.IntegerField(primary_key=True)
-    userid = models.ForeignKey('CustomUser', on_delete=models.CASCADE)
+    userid = models.IntegerField()
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     payment_date = models.DateField()
     payment_method = models.CharField(max_length=50)
