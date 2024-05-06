@@ -3,11 +3,29 @@ from .models import CustomUser, Trainer, WorkoutPlan, FitnessActivity, DietChart
 from .forms import UserForm, TrainerForm, WorkoutPlanForm, FitnessActivityForm, DietChartForm, PaymentForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from datetime import date
+
+@login_required
+def upload_meal(request):
+    if request.method == 'POST':
+        form = DietChartForm(request.POST)
+        if form.is_valid():
+            meal = form.save(commit=False)
+            meal.userid = request.user
+            meal.activity_date = date.today()
+            meal.save()
+            return redirect('home')  # You can redirect to any other page after meal upload
+    else:
+        form = DietChartForm()
+    return render(request, 'upload_meal.html', {'form': form})
+
 
 def home(request):
     return render(request, 'home.html')
 
+@login_required
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -15,7 +33,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('home')
+            return render(request, 'home.html')
         else:
             error_message = 'Invalid username or password.'
             return render(request, 'login.html', {'error_message': error_message})
@@ -23,7 +41,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return render(request, 'home.html')
 
 def register_view(request):
     if request.method == 'POST':
@@ -31,7 +49,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
+            return render(request, 'home.html')
     else:
         form = UserForm()
     return render(request, 'register.html', {'form': form})

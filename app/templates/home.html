@@ -6,12 +6,32 @@
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
             <h1 style="font-size: 3rem; color: #333; margin-bottom: 1rem;">Welcome to Fitness App</h1>
             <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">Your journey to a healthier lifestyle starts here.</p>
-            <a href="{% url 'register' %}" style="display: inline-block; background-color: #333; color: #fff; text-decoration: none; padding: 1rem 2rem; border-radius: 5px; transition: background-color 0.3s ease;">Get Started</a>
         </div>
     </section>
 
     <section style="background-color: #fff; padding: 2rem;">
         <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="font-size: 2rem; color: #333; margin-bottom: 1rem;">Upload Meal</h2>
+            <form method="post" >
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="food_name">Food Name</label>
+                    <input type="text" id="food_name" name="food_name">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="text" id="quantity" name="quantity">
+                </div>
+                <div class="form-group">
+                    <label for="timing">Timing</label>
+                    <input type="text" id="timing" name="timing">
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" name="description"></textarea>
+                </div>
+                <button type="submit">Upload Meal</button>
+            </form>
             <h2 style="font-size: 2rem; color: #333; margin-bottom: 1rem;">Features</h2>
             <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
                 <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
