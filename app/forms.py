@@ -1,41 +1,42 @@
 from django import forms
 from .models import CustomUser, Trainer, WorkoutPlan, FitnessActivity, DietChart, Payment
+
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from .models import CustomUser, DietChart
 from django.contrib.auth.models import User
 
-class UserForm(forms.ModelForm):
-    class Meta:
-        model = CustomUser
-        fields = ['username', 'email', 'age', 'gender', 'height', 'weight']
-        # Add any additional fields or customizations you need
+
+class CustomUserCreationForm(UserCreationForm):
+    age = forms.IntegerField()
+    gender = forms.ChoiceField(choices=(('M', 'Male'), ('F', 'Female'), ('O', 'Other')))
+    height = forms.DecimalField(max_digits=5, decimal_places=2)
+    weight = forms.DecimalField(max_digits=5, decimal_places=2)
+
+    class Meta(UserCreationForm.Meta):
+        model = User
+        fields = UserCreationForm.Meta.fields + ('email', 'age', 'gender', 'height', 'weight')
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        # user.set_password(self.cleaned_data['password'])
+        user.email = self.cleaned_data['email']
         if commit:
             user.save()
+            custom_user = CustomUser.objects.create(
+                user_id=user,
+                age=self.cleaned_data['age'],
+                gender=self.cleaned_data['gender'],
+                height=self.cleaned_data['height'],
+                weight=self.cleaned_data['weight']
+            )
         return user
 
-class TrainerForm(forms.ModelForm):
+class UserProfileForm(forms.ModelForm):
     class Meta:
-        model = Trainer
-        fields = ['activityid', 'name', 'specialty', 'phone', 'email', 'training_approach']
-
-class WorkoutPlanForm(forms.ModelForm):
-    class Meta:
-        model = WorkoutPlan
-        fields = ['userid', 'title', 'description', 'duration', 'start_date', 'end_date']
-
-class FitnessActivityForm(forms.ModelForm):
-    class Meta:
-        model = FitnessActivity
-        fields = ['userid', 'type', 'duration', 'activity_date', 'calories_burned']
+        model = CustomUser
+        fields = ['age', 'gender', 'height', 'weight']
 
 class DietChartForm(forms.ModelForm):
     class Meta:
         model = DietChart
-        fields = ['userid', 'food_name', 'quantity', 'timing', 'description']
-
-class PaymentForm(forms.ModelForm):
-    class Meta:
-        model = Payment
-        fields = ['userid', 'amount', 'payment_date', 'payment_method']
+        fields = ['food_name', 'quantity', 'timing', 'description']

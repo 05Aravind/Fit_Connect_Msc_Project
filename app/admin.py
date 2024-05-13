@@ -5,7 +5,7 @@ from .models import CustomUser, Trainer, WorkoutPlan, FitnessActivity, DietChart
 
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'age', 'gender', 'height', 'weight')
+    list_display = ('age', 'gender', 'height', 'weight')
 
 @admin.register(Trainer)
 class TrainerAdmin(admin.ModelAdmin):
@@ -13,28 +13,19 @@ class TrainerAdmin(admin.ModelAdmin):
 
 @admin.register(WorkoutPlan)
 class WorkoutPlanAdmin(admin.ModelAdmin):
-    list_display = ('title', 'user', 'duration', 'start_date', 'end_date')
+    list_display = ('title', 'userid', 'duration', 'start_date', 'end_date')
 
-    def user(self, obj):
-        return obj.userid.username
 
 @admin.register(FitnessActivity)
 class FitnessActivityAdmin(admin.ModelAdmin):
-    list_display = ('type', 'user', 'duration', 'activity_date', 'calories_burned')
-
-    def user(self, obj):
-        return obj.userid.username
+    list_display = ('type', 'userid', 'duration', 'activity_date', 'calories_burned')
 
 @admin.register(DietChart)
 class DietChartAdmin(admin.ModelAdmin):
-    list_display = ('food_name', 'user', 'quantity', 'timing', 'description')
+    list_display = ('food_name', 'userid', 'quantity', 'timing', 'description')
 
-    def user(self, obj):
-        return obj.userid.username
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ('user', 'amount', 'payment_date', 'payment_method')
+    list_display = ('userid', 'amount', 'payment_date', 'payment_method')
 
-    def user(self, obj):
-        return obj.userid.username

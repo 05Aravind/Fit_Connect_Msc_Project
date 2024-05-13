@@ -1,52 +1,134 @@
 {% extends 'base.html' %}
 
-
 {% block content %}
-    <section style="background-color: #f9f9f9; padding: 2rem;">
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <h1 style="font-size: 3rem; color: #333; margin-bottom: 1rem;">Welcome to Fitness App</h1>
-            <p style="font-size: 1.2rem; color: #666; margin-bottom: 2rem;">Your journey to a healthier lifestyle starts here.</p>
-        </div>
-    </section>
-
-    <section style="background-color: #fff; padding: 2rem;">
-        <div style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <h2 style="font-size: 2rem; color: #333; margin-bottom: 1rem;">Upload Meal</h2>
-            <form method="post" >
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="food_name">Food Name</label>
-                    <input type="text" id="food_name" name="food_name">
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Profile</h4>
                 </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="text" id="quantity" name="quantity">
-                </div>
-                <div class="form-group">
-                    <label for="timing">Timing</label>
-                    <input type="text" id="timing" name="timing">
-                </div>
-                <div class="form-group">
-                    <label for="description">Description</label>
-                    <textarea id="description" name="description"></textarea>
-                </div>
-                <button type="submit">Upload Meal</button>
-            </form>
-            <h2 style="font-size: 2rem; color: #333; margin-bottom: 1rem;">Features</h2>
-            <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
-                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Workout Plans</h3>
-                    <p style="color: #666;">Create custom workout plans tailored to your fitness goals.</p>
-                </div>
-                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Diet Charts</h3>
-                    <p style="color: #666;">Plan your meals with our easy-to-follow diet charts.</p>
-                </div>
-                <div style="max-width: 300px; margin: 1rem; padding: 1rem; background-color: #f9f9f9; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
-                    <h3 style="font-size: 1.5rem; color: #333; margin-bottom: 1rem;">Personal Trainers</h3>
-                    <p style="color: #666;">Connect with experienced trainers for personalized guidance.</p>
+                <div class="card-body">
+                    <p><strong>Name:</strong> {{ custom_user.user_id.username }}</p>
+                    <p><strong>Age:</strong> {{ custom_user.age }}</p>
+                    <p><strong>Gender:</strong> {{ custom_user.gender }}</p>
+                    <p><strong>Height:</strong> {{ custom_user.height }} cm</p>
+                    <p><strong>Weight:</strong> {{ custom_user.weight }} kg</p>
+                    <a href="{% url 'update_profile' %}" class="btn btn-primary">Update Profile</a>
                 </div>
             </div>
         </div>
-    </section>
+        <div class="col-md-4">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Fitness Activities</h4>
+                </div>
+                <div class="card-body">
+                    {% for activity in fitness_activities %}
+                    <p>{{ activity.type }} ({{ activity.duration }} minutes) - {{ activity.activity_date }}</p>
+                    {% empty %}
+                    <p>No fitness activities recorded yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Workout Plans</h4>
+                </div>
+                <div class="card-body">
+                    {% for plan in workout_plans %}
+                    <p>{{ plan.title }} ({{ plan.start_date }} - {{ plan.end_date }})</p>
+                    {% empty %}
+                    <p>No workout plans created yet.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Create Diet Chart</h4>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'create_diet_chart' %}" class="btn btn-primary">Create Diet Chart</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Choose Trainer</h4>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'choose_trainer' %}" class="btn btn-primary">Choose Trainer</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Make Payment</h4>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'make_payment' %}" class="btn btn-primary">Make Payment</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card dark-card">
+                <div class="card-header">
+                    <h4>Diet Chart</h4>
+                </div>
+                <div class="card-body">
+                    {% if diet_charts %}
+                    <canvas id="dietChart"></canvas>
+                    <script>
+                        var foodNames = [];
+                        var quantities = [];
+                        {% for diet_chart in diet_charts %}
+                        foodNames.push("{{ diet_chart.food_name }}");
+                        quantities.push({{ diet_chart.quantity }});
+                        {% endfor %}
+
+                        var ctx = document.getElementById('dietChart').getContext('2d');
+                        var dietChart = new Chart(ctx, {
+                            type: 'pie',
+                            data: {
+                                labels: foodNames,
+                                datasets: [{
+                                    label: 'Diet Chart',
+                                    data: quantities,
+                                    backgroundColor: [
+                                        // Add colors for each food item
+                                        'rgba(255, 99, 132, 0.8)',
+                                        'rgba(54, 162, 235, 0.8)',
+                                        'rgba(255, 206, 86, 0.8)',
+                                        'rgba(75, 192, 192, 0.8)',
+                                        'rgba(153, 102, 255, 0.8)',
+                                        'rgba(255, 159, 64, 0.8)'
+                                    ]
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false
+                            }
+                        });
+                    </script>
+                    {% else %}
+                    <p>No diet chart created yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="E:\fit connect\Fit_Connect_Msc_Project\env"
+VIRTUAL_ENV="E:\Fit_Connect_Msc_Project\env"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
